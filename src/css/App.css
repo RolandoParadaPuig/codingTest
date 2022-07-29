@@ -1,3 +1,14 @@
+*,
+ul,
+li,
+ol,
+a {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+}
 body {
   background-color: var(--taskList-Very-dark-blue);
 }

@@ -28,3 +28,10 @@
   font-size: 3rem;
   color: var(--White-User-icon_color);
 }
+
+.user__info__label {
+  text-align: center;
+  font-size: 1.25rem;
+  color: var(--Light-Grayish-Blue-Background);
+  padding: 1rem 0;
+}

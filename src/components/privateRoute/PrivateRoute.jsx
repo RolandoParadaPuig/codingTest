@@ -18,5 +18,5 @@ export const PrivateRoute = ({ children }) => {
   if (loading) {
     return <AuthLoader />;
   }
-  return auth.currentUser ? children : <Navigate to="/login" />;
+  return auth.currentUser ? children : <Navigate to="/login/" />;
 };

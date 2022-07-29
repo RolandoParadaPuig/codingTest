@@ -3,21 +3,26 @@ import { Button, Checkbox, Form, Input, Row, message, Col } from "antd";
 import { UserAddOutlined, LockOutlined } from "@ant-design/icons";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../../firebase/firebaseConfig";
+import { useNavigate } from "react-router-dom";
+
 const auth = getAuth(app);
-export const Signup = () => {
+
+export const Signup = (props) => {
+  const setNewUserEmail = props.setNewUserEmail;
+  const navigate = useNavigate();
   const onSignupSuccess = async (values) => {
     await createUserWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        message.success("successfully signed up");
-        console.log(user);
+        setNewUserEmail(user.email);
+        message.success("successfully signed up " + user.email);
+        navigate(`/login/userInfo`);
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(error.message);
         // ..
       });
   };

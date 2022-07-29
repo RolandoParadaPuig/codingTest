@@ -3,26 +3,27 @@ import { AuthBody } from "./components/auth/authBody/AuthBody";
 import { Dashboard } from "./components/dashboard/Dashboard";
 import { PrivateRoute } from "./components/privateRoute/PrivateRoute";
 import "../src/css/App.css";
-import { TestComponent } from "./components/testComponent/TestComponent";
+import { UserInfo } from "./components/auth/userInfo/UserInfo";
+import { useState } from "react";
 function App() {
+  const [newUserEmail, setNewUserEmail] = useState("");
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/login/*" element={<AuthBody />} />
+          <Route
+            path="/login/*"
+            element={<AuthBody setNewUserEmail={setNewUserEmail} />}
+          />
+          <Route
+            path="/login/userInfo/*"
+            element={<UserInfo newUserEmail={newUserEmail} />}
+          />
           <Route
             path="/*"
             element={
               <PrivateRoute>
                 <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/test/*"
-            element={
-              <PrivateRoute>
-                <TestComponent />
               </PrivateRoute>
             }
           />

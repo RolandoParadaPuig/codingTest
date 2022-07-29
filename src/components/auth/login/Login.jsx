@@ -1,27 +1,56 @@
 import React from "react";
 import { Button, Form, Input, Row, message, Col } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
 import app from "../../../firebase/firebaseConfig";
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 export const Login = () => {
   const navigate = useNavigate();
   const onLoginSucces = async (values) => {
-    await signInWithEmailAndPassword(auth, values.email, values.password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        message.success("Welcome");
-        navigate(`/`);
-        // ...
+    await setPersistence(auth, browserSessionPersistence)
+      .then(async () => {
+        await signInWithEmailAndPassword(auth, values.email, values.password)
+          .then(async (userCredential) => {
+            // Signed in
+            const q = query(
+              collection(db, "user"),
+              where("email", "==", values.email)
+            );
+            const user = userCredential.user;
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+              auth.currentUser.displayName = doc.data().userName;
+            });
+
+            message.success("Welcome");
+            navigate(`/`);
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            message.error("Email or Password Incorrect");
+          });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        message.success("Email or Password Incorrect");
+        message.error("Error");
       });
   };
 

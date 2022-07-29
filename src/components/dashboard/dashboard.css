@@ -1,0 +1,30 @@
+.task__list__title {
+  font-size: 1.5rem;
+  color: var(--White-User-icon_color);
+}
+.task__list__media {
+  display: none;
+}
+.dashboard__content__container {
+  background-color: var(--Dark-Desaturated-Blue-Text-CTA-Background);
+  height: calc(100vh - 8.5rem);
+  overflow: scroll;
+}
+
+.task__list__item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--White-User-icon_color);
+}
+
+.task__list__del_item {
+  color: var(--Light-Red-Discount-Text);
+}
+
+@media (min-width: 350px) {
+  .task__list__media {
+    display: inline-block;
+  }
+}

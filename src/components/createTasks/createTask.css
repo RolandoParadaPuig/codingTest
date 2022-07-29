@@ -1,0 +1,12 @@
+.create__task__title {
+  color: var(--Very-Pale-Blue-Main-Background);
+  font-size: 1.5rem;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+.create__task__container {
+  max-width: 350px;
+  width: 95%;
+  margin: auto;
+}

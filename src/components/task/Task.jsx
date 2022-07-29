@@ -23,28 +23,38 @@ import {
 import app from "../../firebase/firebaseConfig";
 import { getAuth } from "firebase/auth";
 import "./task.css";
+import { AuthLoader } from "../AuthLoader";
 const db = getFirestore(app);
 const auth = getAuth(app);
 
 export const Task = (props) => {
+  // userName passed for props
   const userName = props.userName;
+  // all the used react state hooks
   const [titleArr, setTitleArr] = useState([]);
   const [tasks, setTasks] = useState({});
   const [task, setTask] = useState("");
   const [selectedTitle, setSelectedTitle] = useState("");
   const [showForm, setShowForm] = useState(false);
 
+  // aux arrays
   let auxArr = [];
   let auxTasksArr = [];
-  const onTaskChange = (e) => setTask(e.target.value);
 
+  // funtion to delete tasks from the task list on firestore
   const delItem = async (element, tasksListTitle) => {
+    // document reference
     const taskLstRef = doc(db, "user", userName, "taskList", tasksListTitle);
+
+    // delete field async call
     await updateDoc(taskLstRef, {
       [element]: deleteField(),
     }).then(() => {});
   };
+
+  // funtion to delete Task list document on firestore
   const deleteTaskList = async (tasksListTitle) => {
+    // document reference
     const delTaskListRef = doc(
       db,
       "user",
@@ -52,13 +62,21 @@ export const Task = (props) => {
       "taskList",
       tasksListTitle
     );
+    // delete document async call
     await deleteDoc(delTaskListRef);
   };
+
+  // function to change the task status
   const aprooveTask = async (task, bool, tasksListTitle) => {
+    // task list document reference
     const taskLstRef = doc(db, "user", userName, "taskList", tasksListTitle);
-    setDoc(taskLstRef, { [task]: !bool }, { merge: true });
+    // async change of the task status
+    await setDoc(taskLstRef, { [task]: !bool }, { merge: true });
   };
+
+  // task list colection reference
   const q = query(collection(db, "user", userName, "taskList"));
+  // real time listening for changes on the colection to render the tasks status/delet etc.
   onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       auxArr.push(doc.id);
@@ -69,10 +87,14 @@ export const Task = (props) => {
     auxArr = [];
     auxTasksArr = [];
   });
+
+  // function to generate new Tasks on the selected task List
   const sendTask = async (values) => {
     values.title = selectedTitle;
     console.log(task, selectedTitle);
+    // task List document reference
     const taskRef = doc(db, "user", userName, "taskList", selectedTitle);
+    // async update of the task list document to storage new tasks
     await setDoc(
       taskRef,
       {
@@ -88,6 +110,10 @@ export const Task = (props) => {
     setTask("");
     form.resetFields();
   };
+
+  // function te set the task state with the user input char
+  const onTaskChange = (e) => setTask(e.target.value);
+  // function to open/close the form modal to add tasks
   const addTask = (values) => {
     setSelectedTitle(values);
     setShowForm(!showForm);
@@ -98,7 +124,9 @@ export const Task = (props) => {
   }, [userName]);
 
   return (
+    // Dinamic Render of the Tasks Lists depending of the information stored on the firestore database
     <div className="tasks__container">
+      {/* rendering the components depending on the information stored on titleArr */}
       {titleArr.map((tasksTitle) => {
         return (
           <div
@@ -113,9 +141,14 @@ export const Task = (props) => {
                 }}
               />
             </h3>
+            {/* once rendered the main blocks the app renders the list of tasks with the information stored on the tasks state */}
             {tasks.map((tasksList) => {
+              {
+                /* ternary operator used to ensure the app renders only the information it needs */
+              }
               return tasksList.id == tasksTitle ? (
                 <ul key={`orderList-${tasksTitle}`}>
+                  {/* rendering each task element */}
                   {Object.keys(tasksList.data()).map((element) => {
                     return (
                       <li
@@ -125,6 +158,7 @@ export const Task = (props) => {
                         )}`}
                       >
                         <div>
+                          {/* rendering the checked/non checked icon depending if the task is completed or not */}
                           {tasksList.data()[element] ? (
                             <CheckSquareOutlined
                               onClick={() => {
@@ -146,10 +180,12 @@ export const Task = (props) => {
                               }}
                             />
                           )}{" "}
+                          {/* render of the task */}
                           {element}
                         </div>
                         <div className="task__list__del_item">
                           {" "}
+                          {/* delet button to delete the task the user whants */}
                           <DeleteOutlined
                             onClick={() => {
                               delItem(element, tasksTitle);
@@ -164,6 +200,7 @@ export const Task = (props) => {
             })}
             <Row justify="end">
               <Col xs={4}>
+                {/* Open the form "modal" to acces the form for adding more tasks */}
                 <Button
                   type="link"
                   onClick={() => {
@@ -177,6 +214,7 @@ export const Task = (props) => {
           </div>
         );
       })}
+      {/* form Modal to add more tasks to the selected task list */}
       {showForm ? (
         <div className={"add__task__form"} id={"addTaskForm"}>
           <h3>

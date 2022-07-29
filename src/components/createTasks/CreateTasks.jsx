@@ -14,12 +14,16 @@ import "./createTask.css";
 
 export const CreateTasks = (props) => {
   const setCreateNewTask = props.setCreateNewTask;
+  // react hooks to set states
   const [option, setOption] = useState([]);
   const [task, setTask] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
+
+  // delete function for the user to delete tasks
   const delItem = (index) => {
     setOption(option.filter((item) => item != option[index]));
   };
+  // add function for the user to input new tasks
   const addNewTask = (task) => {
     if (task != "") {
       setOption([...option, task]);
@@ -27,15 +31,20 @@ export const CreateTasks = (props) => {
       form.resetFields();
     }
   };
-
+  // function to set the states needed
   const addingTask = (e) => setTask(e.target.value);
   const onTitleChange = (e) => setTaskTitle(e.target.value);
+
+  // funtion to store the new tasks list
   const generateNewTaskList = async (values) => {
     console.log(values);
     const userName = auth.currentUser.displayName;
+    // task list reference
     const taskRef = doc(db, "user", userName, "taskList", values.taskTitle);
+    // dinamic storage of the tasks
     option.length != 0
-      ? option.map(async (taskElem) => {
+      ? // individualy storage the tasks
+        option.map(async (taskElem) => {
           await setDoc(
             taskRef,
             {
@@ -47,17 +56,19 @@ export const CreateTasks = (props) => {
             .catch((error) => {
               console.log("error");
             });
-          message.success("Task List Generated");
-          setCreateNewTask(false);
         })
       : message.error("Add at least one task");
+    setCreateNewTask(false);
+    message.success("Task List Generated");
   };
+  // form initail values
   const initValues = {
     taskTitle: taskTitle,
   };
   const [form] = Form.useForm();
   useEffect(() => {}, [task]);
   return (
+    // New Task List creation form
     <Row justify="center" className="create__task__container">
       <Col xs={22}>
         <Form
@@ -68,6 +79,7 @@ export const CreateTasks = (props) => {
           <div>
             <h3 className="create__task__title">Create Task List</h3>
           </div>
+          {/* task List title input */}
           <Form.Item
             name={"taskTitle"}
             rules={[{ required: true, message: "Input your Task List Title" }]}
@@ -78,7 +90,7 @@ export const CreateTasks = (props) => {
               onChange={onTitleChange}
             />
           </Form.Item>
-
+          {/* rendering the tasks selected by the user */}
           <ul>
             {option.map((task) => {
               return (
@@ -99,9 +111,11 @@ export const CreateTasks = (props) => {
               );
             })}
           </ul>
+          {/* tasks input */}
           <Form.Item name={"newTask"}>
             <Input placeholder="New task" value={task} onChange={addingTask} />
           </Form.Item>
+          {/* adding new tasks to the options arr */}
           <Form.Item>
             <Button
               block
@@ -113,6 +127,7 @@ export const CreateTasks = (props) => {
               add Task
             </Button>
           </Form.Item>
+          {/* create task list button */}
           <Form.Item>
             <Button type="primary" htmlType="submit">
               create Task List

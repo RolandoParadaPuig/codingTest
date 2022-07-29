@@ -8,6 +8,7 @@ const { TabPane } = Tabs;
 export const AuthBody = (props) => {
   const setNewUserEmail = props.setNewUserEmail;
   return (
+    // tabs to navigate between login and signup pages
     <Tabs defaultActiveKey="1" centered className="auth__tabs">
       <TabPane tab="Login" key="1">
         <Login />

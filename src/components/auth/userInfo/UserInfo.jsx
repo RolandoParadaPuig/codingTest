@@ -10,6 +10,7 @@ const db = getFirestore(app);
 export const UserInfo = () => {
   const navigate = useNavigate();
   const onUserSelected = async (values) => {
+    // adding the UserName to the new user
     await setDoc(doc(db, "user", values.userName), {
       userName: values.userName,
       email: auth.currentUser.email,
@@ -24,6 +25,7 @@ export const UserInfo = () => {
     message.error("You need to Set a User Name");
   };
   return (
+    // UserName Setup form for the new users
     <Form onFinish={onUserSelected} onFinishFailed={onFailedUserSelected}>
       <Row justify="center">
         <Col span={24} className="user__info__label">

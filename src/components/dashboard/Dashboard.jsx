@@ -19,6 +19,7 @@ const { Header, Footer, Sider, Content } = Layout;
 export const Dashboard = () => {
   const [userName, setUserName] = useState("");
   const [createNewTask, setCreateNewTask] = useState(false);
+  // function to get the user data stored on the user document
   const getLogedUser = async () => {
     const q = query(
       collection(db, "user"),
@@ -38,6 +39,7 @@ export const Dashboard = () => {
 
   useEffect(() => {}, [userName]);
   return (
+    // dashboard
     <Layout className="layout">
       {/* Header of the app */}
       <Header>
@@ -49,6 +51,7 @@ export const Dashboard = () => {
             </h1>
           </Col>
           <Col xs={2}>
+            {/* Create New Task List button */}
             <Button onClick={createTask} type="link" size="large">
               <PlusOutlined />
             </Button>

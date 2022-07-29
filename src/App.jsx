@@ -9,6 +9,7 @@ function App() {
   const [newUserEmail, setNewUserEmail] = useState("");
   return (
     <>
+      {/* secure Routes to ensure the app works properly */}
       <Router>
         <Routes>
           <Route

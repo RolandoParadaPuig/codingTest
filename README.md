@@ -10,6 +10,7 @@ This is my solution for the Coding thes
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
+  - [Test Results](#test-results)
   - [Useful resources](#useful-resources)
 - [Author](#author)
 
@@ -85,6 +86,15 @@ Elements to be evaluated:
 - firebase.com auth service
 - Ant Design for the UI
 
+### Test Results
+
+Test Made with Cypress
+![image](https://user-images.githubusercontent.com/33847751/181840441-fcd43180-4fb8-4343-9a3a-ebf615e6d78c.png)
+
+Url Of the test Results using Cypress package
+https://dashboard.cypress.io/projects/245rct/runs/1/overview
+
+I have to mention that this tests were made using the "default" testing files provided by cypress
 
 ### Useful resources
 

@@ -1,8 +1,9 @@
 .tasks__container {
+  max-width: 1100px;
+  margin: auto;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   padding-top: 1rem;
 }
 .tasks__list_container {

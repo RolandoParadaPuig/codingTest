@@ -67,7 +67,7 @@ Elements to be evaluated:
 
 ### Screenshot
 
-[image](https://user-images.githubusercontent.com/33847751/181679683-213233ea-29e3-4bee-b1e2-528bffaf734b.png)
+![image](https://user-images.githubusercontent.com/33847751/181681166-804d2703-d40b-40e7-901f-632516947d8c.png)
 
 
 ### Links
